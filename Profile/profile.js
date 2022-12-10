@@ -369,10 +369,6 @@ window.onclick=(e)=>{
         confirmButtonText: 'Yes, Report!'
       }).then((result) => {
         if (result.isConfirmed) {
-
-          let postToRemove=e.target.parentNode.parentNode.parentNode;
-          removePost(e.target.dataset.postid,postToRemove);
-
           Swal.fire(
             'Reported!',
             'Your Report has been Send.',
