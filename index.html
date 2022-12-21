@@ -1,0 +1,509 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="shortcut icon" href="images/favicon.ico" type="image/x-icon">
+    <title>facebook.com</title>
+    <!-- style css link -->
+    <link rel="stylesheet" href="style.css">
+    <!-- fontawesome css link -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+
+</head>
+<body>
+
+<!-- start loading -->
+  <div class="loaderDad">
+    <div class="loader"></div>
+  </div>
+<!-- end loading -->
+
+<!-- start show accountsFromSearch -->
+<div class="accountsFromSearchDad">
+    <div class="accountsFromSearch">
+        <div class="post-icon" style="margin: 10px; position: absolute; top: 0%; right: 0%;">
+            <a href="#" style="background: #ece6e8;">
+                <i id="close-accountsFromSearchDad-div" style="background: #e50931; font-size: 20px; width: 30px;" class="fa-solid fa-close Gallery-Post"></i>
+            </a>
+        </div>
+        <div class="AllaccountsFromSearch">
+            <div class="friend" style="border-bottom: 1px solid  rgb(151, 208, 182); margin: 10px auto;">
+                <ul>
+                    <li><img src="images/profile-pic.jpg" alt="user"></li>
+                    <li>
+                        <b style="color: rgb(151, 208, 182);">armanul islam</b>
+                        <p style="color: white;">friend</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="friend" style="border-bottom: 1px solid  rgb(151, 208, 182); margin: 10px auto;">
+                <ul>
+                    <li><img src="images/profile-pic.jpg" alt="user"></li>
+                    <li>
+                        <b style="color: rgb(151, 208, 182);">armanul islam</b>
+                        <p style="color: white;">not friend</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="friend" style="border-bottom: 1px solid  rgb(151, 208, 182); margin: 10px auto;">
+                <ul>
+                    <li><img src="images/profile-pic.jpg" alt="user"></li>
+                    <li>
+                        <b style="color: rgb(151, 208, 182);">armanul islam</b>
+                        <p style="color: white;">not friend</p>
+                    </li>
+                </ul>
+            </div>
+            <div class="friend" style="border-bottom: 1px solid  rgb(151, 208, 182); margin: 10px auto;">
+                <ul>
+                    <li><img src="images/profile-pic.jpg" alt="user"></li>
+                    <li>
+                        <b style="color: rgb(151, 208, 182);">armanul islam</b>
+                        <p style="color: white;">not friend</p>
+                    </li>
+                </ul>
+            </div>
+            
+        </div>
+    </div>
+  </div>
+<!-- end show accountsFromSearch -->
+
+
+
+<!-- start show friendRequests -->
+<div class="friendRequestsDad">
+    <div class="friendRequests">
+        <div class="post-icon" style="margin: 10px; position: absolute; top: 0%; right: 0%;">
+            <a href="#" style="background: #ece6e8;">
+                <i id="close-friendRequestsDad-div" style="background: #e50931; font-size: 20px; width: 30px;" class="fa-solid fa-close Gallery-Post"></i>
+            </a>
+        </div>
+        <div class="AllfriendRequests">
+            <!-- <div class="friend" style="border-bottom: 1px solid  rgb(151, 208, 182); margin: 10px auto;">
+                <ul>
+                    <li><img src="images/profile-pic.jpg" alt="user"></li>
+                    <li>
+                        <b style="color: rgb(151, 208, 182);">armanul islam</b>
+                        <p style="color: white;">friend</p>
+                        <button class="accept-friend-request">Confirm</button>
+                        <button class="remove-friend-request friend-remove">Remove</button>
+                    </li>
+                </ul>
+            </div>    -->
+        </div>
+    </div>
+  </div>
+<!-- start show friendRequests -->
+
+
+
+<!-- start post div -->
+    <div class="create-post-dad">
+        <div class="create-post-main">
+            <h2 style="padding: 10px;">Create Post</h2>
+
+            <div class="post-icon" style="margin: 10px; position: absolute; top: 0%; right: 0%;">
+                <a href="#" style="background: #ece6e8;">
+                    <i id="close-post-div" style="background: #e50931; font-size: 20px; width: 30px;" class="fa-solid fa-close Gallery-Post"></i>
+                </a>
+            </div>
+
+            <textarea id="Post-Input" cols="30" rows="8" style="background: #eee;"></textarea>
+
+            <div class="post-div-btn-dad">
+
+                <input type="file" id="PostInput" style="display: none;">
+
+                <div class="post-icon" style="margin: 10px;">
+                    <a style="background: #ece6e8; cursor: pointer;" class="ImBtnForPost">
+                        <i style="background: #037c07;" class="fa-solid fa-camera Gallery-Post"></i>
+                        <p style="display: inline-block;">Image</p>
+                    </a>
+                </div>
+                
+    
+                <div class="post-icon" style="margin: 10px;">
+                    <a href="#" style="background: #ece6e8;;">
+                        <i style="background: #4154ff;" class="fa-solid fa-video Gallery-Post"></i>
+                        <p style="display: inline-block;">Video</p>
+                    </a>
+                </div>
+    
+                <div class="post-icon" style="margin: 10px;">
+                    <a href="#" style="background: #ece6e8;">
+                        <i style="background: #ff4154;" class="fa-solid fa-code Gallery-Post"></i>
+                        <p style="display: inline-block;">Code</p>
+                    </a>
+                </div>
+            </div>
+
+            <div class="post-icon" style="margin: 10px;" id="Post-Btn">
+                <a href="#" style="background: #009e008a; margin: 0px; width: 80% !important;">
+                    <h2 style="display: inline-block; font-weight: bold; color: white; padding: 0px; text-align: center;">Post</h2>
+                </a>
+            </div>
+
+        </div>
+    </div>
+<!-- end post div -->
+
+    
+<!-- header section start -->
+
+
+    <header>
+        <div class="header-container">
+            <div class="header-wrapper">
+                <div class="logoBox">
+                    <img src="images/facebook-logo.webp" alt="logo">
+                </div>
+                <div class="searchBox searchAboutPerson" style="display: none;">
+                    <input type="search">
+                    <i class="fas fa-search"></i>
+                </div>
+                <div class="iconBox1">
+                    <i class="fa-solid fa-house Home-btn"></i>
+                    <i class="fa-solid fa-user-group friend-requests"></i>
+                    <i class="fa-solid fa-video"></i>
+                    <i class="fa-solid fa-search searchAboutPerson"></i>
+                    <i class="fa-brands fa-facebook-messenger"></i>
+                    <i class="fa-solid fa-moon darkTheme"></i>
+                </div>
+                <div class="iconBox2">
+                    <label><img class="profile-btn main-person-img" data-personid="" src="images/profile-pic.webp" alt="user"></label>
+                </div>
+            </div>
+        </div>
+    </header>
+
+
+<!-- header section end -->
+<!-- home section start -->
+
+
+<div class="home">
+    <div class="container">
+        <div class="home-weapper">
+
+            <!-- home left start here -->
+            <div class="home-left">
+
+                <div class="profile">
+
+                    <div style="display: flex; padding: 5px;">
+                        <label style="width: 40px; height: 40px; overflow: hidden; border-radius: 50px;">
+                            <img src="images/profile-pic.webp" class="main-person-img" alt="user">
+                        </label>
+                    </div>
+
+                    
+                    <h3 class="main-person-name"></h3>
+                </div>
+               
+                <div class="pages">
+                    <h4 class="mini-headign">Pages</h4>
+                    <label>
+                        <img src="images/messenger.webp" alt="messenger">
+                        <span>messenger</span>
+                    </label>
+                    <label>
+                        <img src="images/instagram.webp" alt="instagram">
+                        <span>instagram</span>
+                    </label>
+                    <button class="see-more-btn">See more <i class="fa-solid fa-angle-down"></i></button>
+                </div>
+
+                <div class="group">
+                    <h4 class="mini-headign">Group</h4>
+                    <label>
+                        <img src="images/gg.png" alt="group01">
+                        <span>Graphic design</span>
+                    </label>
+                    
+                    <label>
+                        <img src="images/gg2.webp" alt=group02">
+                        <span>website design</span>
+                    </label>
+
+                    <label>
+                        <img src="images/gg3.webp" alt="group03">
+                        <span>ZED.zahidul</span>
+                    </label>
+
+                    <button class="see-more-btn">See more <i class="fa-solid fa-angle-down"></i></button>
+                </div>
+
+                <div class="explore">
+                    <h4 class="mini-headign">Explore</h4>
+                   
+                    <a href="#"><i class="fa-solid fa-user-group"></i> Group</a>
+                    <a href="#"><i class="fa-solid fa-star"></i></i> Favorites</a>
+                    <a href="#"><i class="fa-solid fa-bookmark"></i></i> Saves</a>
+                    <a href="#"><i class="fa-solid fa-clock"></i> Events</a>
+                    <a href="#"><i class="fa-solid fa-flag"></i> Pages</a>
+
+                    <div> Apply Dark Theme</div>
+
+                    <button class="see-more-btn">See more <i class="fa-solid fa-angle-down"></i></button>
+                </div>
+                
+            </div>
+            <!-- home left end here -->
+
+            <!-- home center start here -->
+
+            <div class="home-center">
+                <div class="home-center-wrapper">
+                    <div class="stories">
+                        <h3 class="mini-headign">Stories</h3>
+                        <div class="stories-wrapper" style="position: relative;">
+
+                            <i class="fa-sharp fa-solid fa-circle-left btn-left"></i>
+
+                            <div class="stories-dad">
+                                
+                                <div class="single-stories">
+                                    <label><img src="images/profile-pic.webp" class="main-person-img" alt="user"></label>
+                                    <div>
+                                        <img src="images/profile-pic.webp" class="main-person-img" alt="user">
+                                        <i class="fa-solid fa-circle-plus"></i>
+                                        <b>Create Stories</b>
+                                    </div>
+                                </div>
+    
+                                <div class="single-stories">
+                                    <label><img src="images/us.webp" alt="sp"></label>
+                                    <div>
+                                        <img src="images/ss.webp" alt="ss">
+                                        <b>Your Name</b>
+                                    </div>
+                                </div>
+
+                                <div class="single-stories">
+                                    <label><img src="images/us.webp" alt="sp"></label>
+                                    <div>
+                                        <img src="images/ss.webp" alt="ss">
+                                        <b>Your Name</b>
+                                    </div>
+                                </div>
+
+                                <div class="single-stories">
+                                    <label><img src="images/us.webp" alt="sp"></label>
+                                    <div>
+                                        <img src="images/ss.webp" alt="ss">
+                                        <b>Your Name</b>
+                                    </div>
+                                </div>
+
+                                <div class="single-stories">
+                                    <label><img src="images/us.webp" alt="sp"></label>
+                                    <div>
+                                        <img src="images/ss.webp" alt="ss">
+                                        <b>Your Name</b>
+                                    </div>
+                                </div>
+
+                                <div class="single-stories">
+                                    <label><img src="images/us.webp" alt="sp"></label>
+                                    <div>
+                                        <img src="images/ss.webp" alt="ss">
+                                        <b>Your Name</b>
+                                    </div>
+                                </div>
+
+                            </div>
+
+                            <i class="fa-sharp fa-solid fa-circle-right btn-right"></i>
+
+                        </div>
+                    </div>
+
+
+                    <div class="createPost">
+
+                        <div class="post-text">
+                            <div class="img-person-label-dad">
+                                <label style="width: 50px; height: 50px; overflow: hidden; border-radius: 50px;">
+                                    <img src="images/profile-pic.webp" class="main-person-img" alt="user">
+                                </label>
+                            </div>
+
+                            <input type="text-area" placeholder="What's on your mind, zahidul" readonly="readonly">
+                        </div>
+
+                        <div class="post-icon-cotainer" style="display: flex; justify-content: space-around;">
+
+                            <div class="post-icon">
+                                <a href="#" style="background: #ffebed;">
+                                    <i style="background: #037c07;" class="fa-solid fa-camera Gallery-Post"></i>
+                                    <p style="display: inline-block;">Image</p>
+                                </a>
+                            </div>
+    
+                            <div class="post-icon">
+                                <a href="#" style="background: #ffebed;">
+                                    <i style="background: #4154ff;" class="fa-solid fa-video Gallery-Post"></i>
+                                    <p style="display: inline-block;">Video</p>
+                                </a>
+                            </div>
+    
+                            <div class="post-icon">
+                                <a href="#" style="background: #ffebed;">
+                                    <i style="background: #ff4154;" class="fa-solid fa-code Gallery-Post"></i>
+                                    <p style="display: inline-block;">Code</p>
+                                </a>
+                            </div>
+
+                        </div>
+
+
+                    </div>
+
+                   
+                    <!-- start posts div -->
+
+                    <div class="posts-dad">
+
+                        <!-- <div class="fb-post">
+                            <div class="fb-post-container">
+                                <div class="fb-p-main">
+                                    <div class="post-title">
+                                        <img src="images/user2.jpg" alt="user picture">
+                                        <ul>
+                                            <li><h3>Arham Kabir</h3></li>
+                                            <li><span>02 march at 12:55 PM</span></li>
+                                        </ul>
+                                        <p>Hello Everyone Thanks for Watching Please SUBSCRIBE My Channel - Like Comments and Share</p>
+                                    </div>
+    
+                                    <div class="post-images">
+                                        <div class="post-images" style="width: 100%; min-height: 200px;">
+                                            <img src="images/pp.jpg" alt="post images 01" style="min-height: 300px;">
+                                        </div>
+                                    </div>
+    
+                                    <div class="like-comment">
+                                        <ul>
+                                            <li>
+                                                <img src="images/like.png" alt="like">
+                                                <span>22k</span>
+                                            </li>
+                                            <li><i class="fa-regular fa-comment-dots"></i> <span>555</span></li>
+                                            <li><i class="fa-solid fa-share-from-square"></i> <span>254</span></li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div> -->
+
+                    </div>
+
+                    <!-- end posts div -->
+
+                    
+
+                </div> <!-- home center wrapper end -->
+            </div> <!-- home center end -->
+
+            <div class="home-right">
+                <div class="home-right-wrapper">
+
+                    <div class="event-friend">
+                        <div class="event">
+                            <h3 class="heading">Upcoming Events <span>see all</span></h3>
+                            <img src="images/eve.webp" alt="event-img">
+                            <div class="event-date">
+                                <h3>21 <b>july</b></h3>
+                                <h4>United state of America <span>New York City</span></h4>
+                            </div>
+                            <button><i class="fa-regular fa-star"></i> interested</button>
+                        </div>
+
+                        <hr>
+                    
+                        <div class="friend">
+                            <h3 class="heading">Friend Requests <span>see all</span></h3>
+                            <ul>
+                                <li><img src="images/user4.webp" alt="user"></li>
+                                <li>
+                                    <b>armanul islam</b>
+                                    <p>Lorem ipsum dolor sit amet.</p>
+                                    <button>confirm</button><button class="friend-remove">remove</button>
+                                </li>
+                            </ul>
+                        </div>
+
+                    </div>
+
+                    <div class="create-page">
+                        <ul>
+                            <li>
+                                <i class="fa-solid fa-circle-plus"></i>
+                                <h4>Create Page & Groups</h4>
+                                <i class="fa-solid fa-magnifying-glass"></i>
+                            </li>
+                            <li>
+                                <img src="images/group.webp" alt="groups">
+                            </li>
+                            <li>
+                                <b>simple group or page name <span>200k Members</span></b>
+                                <button>Join Group</button>
+                            </li>
+                        </ul>
+                    </div>
+
+                    <div class="messenger">
+                        <div class="messenger-search">
+                            <i class="fa-solid fa-user-group"></i>
+                            <h4>Messenger</h4>
+                            <input type="search" placeholder="Search">
+                            <i class="fa-solid fa-magnifying-glass"></i>
+                        </div>
+                        <ul>
+                            <li>
+                                <img src="images/us2.webp" alt="user">
+                                <b>Zunayed Hossain <span>Online</span></b>
+                                <i class="fa-brands fa-facebook-messenger"></i>
+                            </li>
+
+                            <li>
+                                <img src="images/us3.webp" alt="user">
+                                <b>Armanul Islam <span>Offline</span></b>
+                                <i class="fa-brands fa-facebook-messenger"></i>
+                            </li>
+
+                            <li>
+                                <img src="images/us4.webp" alt="user">
+                                <b>Mohammad Amir <span>Online</span></b>
+                                <i class="fa-brands fa-facebook-messenger"></i>
+                            </li>
+                        </ul>
+                    </div>
+
+                </div><!-- home right wrapper end -->
+            </div><!-- home right end -->
+
+
+
+
+
+
+        </div>
+    </div>
+</div>
+
+
+
+
+<!-- home section end -->
+<script src="//cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-storage.js"></script>
+<script src="https://www.gstatic.com/firebasejs/7.7.0/firebase-database.js"></script>
+<script src="main.js" type="module"></script>
+
+</body>
+</html>
