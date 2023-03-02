@@ -3,7 +3,7 @@
 
 /* 01 start link firebase*/
 import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js';
-import { getFirestore, collection, getDocs,getDoc, setDoc, addDoc, doc, deleteDoc } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js';
+import { getFirestore, collection, query, where, getDocs,getDoc, setDoc, addDoc, doc,deleteDoc,onSnapshot,orderBy, limit,startAt, startAfter,endAt } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js';
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -33,6 +33,8 @@ return cityList;
 
 
 
+
+
 /* 02 start get AllAccounts */
 
 let AllAccounts;
@@ -50,35 +52,12 @@ async function getUserDataWithId(id){
 
 
 
-/* 03 start function to get All Posts */
-
-let AllPosts;
-
-getAllPostsAndSort();
-
-async function getAllPostsAndSort(){
-
-    await getCit(db, 'posts').then(async (e) => {
-        AllPosts = e;
-    
-        AllPosts=AllPosts.sort(function(a, b) {
-            return a.textTime - b.textTime;
-        });
-    
-        AllPosts=AllPosts.reverse();
-    });
-
-}
-
-/* 03 end function to get All Posts */
 
 
 
 
 
-
-
-/* 04 start check and get user doc */
+/* 03 start check and get user doc */
 
 let mainPersonData;
 let docId = await localStorage.getItem("doc-id");
@@ -91,13 +70,17 @@ if(docId!==null&&docId.trim()!==''){
   location.href="./login/login.html"
 }
 
-/* 04 end check and get user doc */
+/* 03 end check and get user doc */
 
 
 
 
 
-/* 05 start function to getUserData */
+
+
+
+
+/* 04 start function to getUserData */
 
 async function getUserData(mainPersonData){
     
@@ -110,132 +93,124 @@ async function getUserData(mainPersonData){
     });
 }
 
-/* 05 end function to getUserData */
+/* 04 end function to getUserData */
 
 
 
 
 
 
-/* 06 start fuction to set id on all Posts */
+/*05 start return All Posts */
 
-async function setIdForAllPosts(){
-    await getDocs(collection(db,"posts")).then(snap=>{
-        snap.docs.forEach(el=>{
-            setDoc(doc(db,"posts",el.id), {
-                ...el.data(),
-                id: el.id,
-            })
-        })
-        ShowAllPosts();
-    })
+let AllPosts;
+
+async function forAllPosts(X){
+
+  const q = query(collection(db, "posts"), orderBy("textTime","desc"), limit(X||10));
+  const querySnapshot = await getDocs(q);
+  const cityList = querySnapshot.docs.map(doc => doc.data());
+
+  AllPosts=cityList;
+
+  return AllPosts;
 };
 
-/* 06 end fuction to set id on all Posts */
+
+/*05 end return All Posts  */
 
 
 
 
 
+/*06 start loadMorePosts */
 
-/* start fuction to set id on all PostsLikes */
-
-async function setIdForAllPostsLikes(postId){
-    let likeId;
-    await getDocs(collection(db, "posts", postId, "PostLikes")).then(snap=>{
-        snap.docs.forEach(el=>{
-            if(el.data().personId==mainPersonData.id){
-                likeId=el.id;
-            };
-            setDoc(doc(db, "posts", postId, "PostLikes",el.id), {
-                ...el.data(),
-                id: el.id,
-            })
-        })
-    })
-
-    return likeId;
-};
-/* end fuction to set id on all PostsLikes */
-
-
-
-
-
-
-
-
-
-/* start function to check scroll and show posts */
-
-
-// setInterval(cheeckscroll, 3000);
-
-window.onscroll=()=>{
-    if(window.scrollY>=(0.65*document.body.scrollHeight)) {
-        ToShowAllPosts();
-    };
+async function loadMorePosts(X){
+    const q = query(collection(db, "posts"), orderBy("textTime","desc"), limit(X||10),startAfter(AllPosts[AllPosts.length-1].textTime));
+    const querySnapshot = await getDocs(q);
+    const cityList = querySnapshot.docs.map(doc => doc.data());
+    return cityList;
 }
 
-// function cheeckscroll(){
-//     if(window.scrollY>=(0.75*document.body.scrollHeight)) {
-//         ToShowAllPosts();
-//     };
-// };
+/*06 end loadMorePosts  */
 
 
 
 
 
-function ToShowAllPosts(){
 
-    let num = document.querySelector('.posts-dad').childElementCount;
+
+
+
+
+
+/* start get more posts on scrool */
+
+
+window.onscroll=async ()=>{
     
-    for(let i=num; i<num+15; i++){
 
-        if(i>=AllPosts.length){
-            break;
-        };
+    let triggerHeight = window.scrollY + document.body.offsetHeight;
+
+    if(window.scrollY+window.innerHeight >= document.body.offsetHeight){
+        loadMorePosts(5).then(e=>{
+            ToShowAllPosts(e);
+        });
+    }
 
 
-        if(AllPosts[i].textImg!=="undefined"){
-            document.querySelector('.posts-dad').innerHTML+=`
+}
+
+
+/* end get more posts on scrool */
+
+
+
+async function ToShowAllPosts(DataToShow){
+
+        AllPosts=DataToShow;
         
-            <div class="fb-post">
-                <div class="fb-post-container">
-                    <div class="fb-p-main">
-                        <div class="post-title">
-    
-                            <div style="display: flex; padding: 5px; position: relative; top: 20px; left: 30px; transform: translate(-50%, -50%); margin-right: 10px;">
-                                <label style="width: 50px; height: 50px; overflow: hidden; border-radius: 50px;">
-                                    <img src="${AllPosts[i].personImg}" loading="lazy" class="profile-btn" data-personid="${AllPosts[i].personId}" alt="user picture">
-                                </label>
+        AllPosts.forEach(onePosts=>{
+            
+            if(onePosts.textImg!=="undefined"){
+               
+                document.querySelector('.posts-dad').innerHTML+=`
+            
+                <div class="fb-post">
+                    <div class="fb-post-container">
+                        <div class="fb-p-main">
+                            <div class="post-title">
+        
+                                <div style="display: flex; padding: 5px; position: relative; top: 20px; left: 30px; transform: translate(-50%, -50%); margin-right: 10px;">
+                                    <label style="width: 50px; height: 50px; overflow: hidden; border-radius: 50px;">
+                                        <img src="${onePosts.personImg}" loading="lazy" class="profile-btn" data-personid="${onePosts.personId}" alt="user picture">
+                                    </label>
+                                </div>
+        
+                                <ul>
+                                    <li><h3>${onePosts.personName}</h3></li>
+                                    <li><span>${onePosts.textDate}</span></li>
+                                </ul>
+                                <p style="width: 100%; font-size: 20px; font-family: system-ui; padding: 0px 10px 10px;" dir="auto" > ${onePosts.text} </p>
                             </div>
-    
-                            <ul>
-                                <li><h3>${AllPosts[i].personName}</h3></li>
-                                <li><span>${AllPosts[i].textDate}</span></li>
-                            </ul>
-                            <p style="width: 100%; font-size: 20px; font-family: system-ui; padding: 0px 10px 10px;" dir="auto" > ${AllPosts[i].text} </p>
-                        </div>
-    
-                        <div class="post-images">
-                            <div class="post-images" style="width: 100%; min-height: 200px;">
-                                <img src="${AllPosts[i].textImg}" loading="lazy" alt="post images 01" style="">
+        
+                            <div class="post-images">
+                                <div class="post-images" style="width: 100%;">
+                                    <img src="${onePosts.textImg}" loading="lazy" alt="post images 01" style="">
+                                </div>
                             </div>
-                        </div>
-    
-                        <div class="like-comment">
-                            <ul>
-                            <li>
-                                <img id="like-img${i}" class="like-btn" data-postid="${AllPosts[i].id}" src="images/like.webp" alt="like" style="cursor: pointer;">
-                                <span class="liksNum${i}">
-                                    ${eval(getAllPostDocs(AllPosts[i].id).then(e=>{
+        
+                            <div class="like-comment">
+                                <ul>
+                                <li>
+                                    <img id="like-img${onePosts.id}" class="like-btn" data-postid="${onePosts.id}" src="images/like.webp" alt="like" style="cursor: pointer;">
+                                    <span class="liksNum${onePosts.id}">
+                                    ${
+                                        eval(getAllPostDocs(onePosts.id).then(e=>{
                                         
                                         if(e.length==0){
-                                            document.querySelector(`.liksNum${i}`).textContent='';
+                                            document.querySelector(`.liksNum${onePosts.id}`).textContent='';
                                         } else{
-                                            document.querySelector(`.liksNum${i}`).textContent=e.length;
+                                            document.querySelector(`.liksNum${onePosts.id}`).textContent=e.length;
                                         }
                                         
                                         let likeDoc=e.find(el=>el.personId==mainPersonData.id);
@@ -245,88 +220,120 @@ function ToShowAllPosts(){
                                             let likeid=likeDoc.id;
 
                                             
-                                            document.querySelector(`#like-img${i}`).src="./images/like-blue.webp";
+                                            document.querySelector(`#like-img${onePosts.id}`).src="./images/like-blue.webp";
 
-                                            document.querySelector(`#like-img${i}`).dataset.likeid=likeid;
+                                            document.querySelector(`#like-img${onePosts.id}`).dataset.likeid=likeid;
                                         };
 
                                     }))}
-                                </span>
-                            </li>
-                                <li><i class="fa-regular fa-comment-dots"></i> <span></span></li>
-                                <li><i class="fa-solid fa-share-from-square"></i> <span></span></li>
-                            </ul>
+                                    </span>
+                                </li>
+                                    <li><i class="fa-regular fa-comment-dots"></i> <span></span></li>
+                                    <li><i class="fa-solid fa-share-from-square"></i> <span></span></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            
+                `
+            } else{
         
-            `
-        } else{
-    
-            document.querySelector('.posts-dad').innerHTML+=`
+                document.querySelector('.posts-dad').innerHTML+=`
+            
+                <div class="fb-post">
+                    <div class="fb-post-container">
+                        <div class="fb-p-main">
+                            <div class="post-title">
         
-            <div class="fb-post">
-                <div class="fb-post-container">
-                    <div class="fb-p-main">
-                        <div class="post-title">
-    
-                            <div style="display: flex; padding: 5px; position: relative; top: 20px; left: 30px; transform: translate(-50%, -50%); margin-right: 10px;">
-                                <label style="width: 50px; height: 50px; overflow: hidden; border-radius: 50px;">
-                                    <img src="${AllPosts[i].personImg}" loading="lazy" class="profile-btn" data-personid="${AllPosts[i].personId}" alt="user picture">
-                                </label>
+                                <div style="display: flex; padding: 5px; position: relative; top: 20px; left: 30px; transform: translate(-50%, -50%); margin-right: 10px;">
+                                    <label style="width: 50px; height: 50px; overflow: hidden; border-radius: 50px;">
+                                        <img src="${onePosts.personImg}" loading="lazy" class="profile-btn" data-personid="${onePosts.personId}" alt="user picture">
+                                    </label>
+                                </div>
+        
+                                <ul>
+                                    <li><h3>${onePosts.personName}</h3></li>
+                                    <li><span>${onePosts.textDate}</span></li>
+                                </ul>
+                                <p style="width: 100%; font-size: 20px; font-family: system-ui;" dir="auto" > ${onePosts.text} </p>
                             </div>
-    
-                            <ul>
-                                <li><h3>${AllPosts[i].personName}</h3></li>
-                                <li><span>${AllPosts[i].textDate}</span></li>
-                            </ul>
-                            <p style="width: 100%; font-size: 20px; font-family: system-ui;" dir="auto" > ${AllPosts[i].text} </p>
-                        </div>
-    
-                        <div class="like-comment">
-                            <ul>
-                                <li>
-                                    <img id="like-img${i}" class="like-btn" data-postid="${AllPosts[i].id}" src="images/like.webp" alt="like" style="cursor: pointer;">
-                                    <span class="liksNum${i}">
-                                        ${eval(getAllPostDocs(AllPosts[i].id).then(e=>{
+        
+                            <div class="like-comment">
+                                <ul>
+                                    <li>
+                                        <img id="like-img${onePosts.id}" class="like-btn" data-postid="${onePosts.id}" src="images/like.webp" alt="like" style="cursor: pointer;">
+                                        <span class="liksNum${onePosts.id}">
+                                        ${
+                                            eval(getAllPostDocs(onePosts.id).then(e=>{
+                                            
+                                            
                                             if(e.length==0){
-                                                document.querySelector(`.liksNum${i}`).textContent='';
+                                                document.querySelector(`.liksNum${onePosts.id}`).textContent='';
                                             } else{
-                                                document.querySelector(`.liksNum${i}`).textContent=e.length;
+                                                document.querySelector(`.liksNum${onePosts.id}`).textContent=e.length;
                                             }
                                             
                                             let likeDoc=e.find(el=>el.personId==mainPersonData.id);
-
+    
                                             if(likeDoc!==undefined){
-
+    
                                                 let likeid=likeDoc.id;
-
-                                                document.querySelector(`#like-img${i}`).src="./images/like-blue.webp";
-
-                                                document.querySelector(`#like-img${i}`).dataset.likeid=likeid;
+    
+                                                
+                                                document.querySelector(`#like-img${onePosts.id}`).src="./images/like-blue.webp";
+    
+                                                document.querySelector(`#like-img${onePosts.id}`).dataset.likeid=likeid;
                                             };
-
+    
                                         }))}
-                                    </span>
-                                </li>
-                                <li><i class="fa-regular fa-comment-dots"></i> <span></span></li>
-                                <li><i class="fa-solid fa-share-from-square"></i> <span></span></li>
-                            </ul>
+                                        </span>
+                                    </li>
+                                    <li><i class="fa-regular fa-comment-dots"></i> <span></span></li>
+                                    <li><i class="fa-solid fa-share-from-square"></i> <span></span></li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
-        
-            `
-        };
-
-    }
-
+            
+                `
+            };
+    
+        });
 
 };
 
 /* end function to check scroll and show posts */
+
+
+
+
+
+
+
+
+
+
+/* strart get PostLikes */
+
+async function getAllPostDocs(postId) {
+    const c1 = collection(db, "posts", postId, "PostLikes");
+    const c2 = await getDocs(c1);
+    const c3 = c2.docs.map(doc => doc.data());
+    return c3;
+};
+
+
+/* end get PostLikes */
+
+
+
+
+
+
+
+
 
 
 /* 07 start function to show Allposts */
@@ -335,11 +342,12 @@ ShowAllPosts();
 
 async function ShowAllPosts() {
 
-    await getAllPostsAndSort();
-    
     document.querySelector('.posts-dad').innerHTML=``;
 
-    ToShowAllPosts();
+    await forAllPosts(5).then(e=>{
+        ToShowAllPosts(e);
+    });
+    
 
 };
 
@@ -395,19 +403,6 @@ function cheekStatiesBtn(statusBtnLeft){
 
 
 /* 10 end staties btns */
-
-
-
-
-async function getAllPostDocs(postId) {
-    const c1 = collection(db, "posts", postId, "PostLikes");
-    const c2 = await getDocs(c1);
-    const c3 = c2.docs.map(doc => doc.data());
-    return c3;
-};
-
-
-
 
 
 
@@ -527,19 +522,22 @@ async function LikeBtn(postId,LikeBtn){
 
 
     if(`${LikeBtn.src}`.includes("like.webp")){
-            
-        const PostLikesCol = collection(db, "posts", postId, "PostLikes");
+        
+        let randomId = parseInt(Math.random()*10000000);
 
-        addDoc(PostLikesCol,{
+        
+
+        setDoc(doc(db, "posts", postId, "PostLikes",`${randomId}`),{
+            id: randomId,
             personName: mainPersonData.username,
             personId: mainPersonData.id,
             personImg: mainPersonData.personImg,
         });
 
 
-        setIdForAllPostsLikes(postId).then(e=>{
-            LikeBtn.dataset.likeid=e;
-        });
+        
+        LikeBtn.dataset.likeid=randomId;
+        
 
 
         getAllPostDocs(postId).then(e=>{
@@ -620,15 +618,17 @@ async function uploadImage() {
     const file =  document.querySelector("#PostInput").files[0];
     const name = +new Date() + "-" + file.name;
     const metadata = {
-      contentType: file.type
+      contentType: file.type,
     };
   
     const task = ref.child(name).put(file, metadata);
     task
     .then(async snapshot => snapshot.ref.getDownloadURL())
     .then(async url => {
-        PostImgSrc=url
-        document.querySelector(".loaderDad").style.display="none"
+
+        PostImgSrc=url;
+        document.querySelector(".loaderDad").style.display="none";
+
     })
     .catch(console.error);
     
@@ -650,7 +650,9 @@ document.querySelector('.ImBtnForPost').addEventListener('click',()=>{
 })
 
 document.querySelector('#PostInput').addEventListener('change',()=>{
-    uploadImage()
+    
+    uploadImage();
+
     document.querySelector(".loaderDad").style.display="block"
 })
 
@@ -660,11 +662,13 @@ document.querySelector('#Post-Btn').addEventListener('click',async ()=>{
     let text = document.querySelector('#Post-Input').value
     textImg=PostImgSrc;
 
+
+    let randomId = parseInt(Math.random()*10000000);
+
     if(text!==''||textImg!==''){
 
-
-
-        addDoc(collection(db,"posts"),{
+        setDoc(doc(db,"posts",`${randomId}`),{
+            id: `${randomId}`,
             text: `${text}`,
             textImg: `${textImg}`,
             textTime: Date.now(),
@@ -672,12 +676,12 @@ document.querySelector('#Post-Btn').addEventListener('click',async ()=>{
             personId: mainPersonData.id,
             personName: mainPersonData.username,
             personImg: mainPersonData.personImg,
-        });
+        }).then(e=>{
+            location.reload();
+        })
 
-        document.querySelector('#Post-Input').value=''
-        document.querySelector('.create-post-dad').style.display='none'
-
-        await setIdForAllPosts();
+        document.querySelector('#Post-Input').value='';
+        document.querySelector('.create-post-dad').style.display='none';
 
     };
 });
@@ -874,9 +878,6 @@ function showDate(){
 
 
 /* 19 end function to get data now */
-
-
-
 
 
 

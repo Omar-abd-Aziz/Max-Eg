@@ -113,6 +113,7 @@ header{
 
 .logoBox img{
     width: 60px;
+    border-radius: 20px;
 }
 .searchBox{
     width: 38%;
@@ -1102,7 +1103,7 @@ header{
     }
 
     .logoBox img{
-        width: 35px;
+        width: 50px;
     }
 
     header{

@@ -57,18 +57,7 @@ async function getCit(db,X) {
 
 
 /* start set id on all docs */
-function setIdForAllDoc(){
-    getDocs(collection(db,"accounts")).then(snap=>{
-        snap.docs.forEach(el=>{
-            setDoc(doc(db,"accounts",el.id), {
-                ...el.data(),
-                id: el.id,
-            })
-        })
-        getCards()
-    })
-}
-setIdForAllDoc()
+
 /* end set id on all docs */
 
 
@@ -83,7 +72,7 @@ function getCards() {
 }
 /* end get accounts */
 
-
+getCards();
 
 /*Start Sing In*/
 
@@ -141,7 +130,10 @@ $(".btn-sign-up").addEventListener("click",()=>{
     if(username!=""&&password!=""&&password2!=""&&email!=""&&password==password2)
     {
 
-      addDoc(collection(db,"accounts"),{
+      let randomId = parseInt(Math.random()*10000000);
+
+      setDoc(doc(db,"accounts",`${randomId}`),{
+        id: randomId,
         username: username,
         password: password,
         email: email,
@@ -153,7 +145,7 @@ $(".btn-sign-up").addEventListener("click",()=>{
         friendRequests:[],
       });
   
-      setIdForAllDoc()
+      
 
       $(".username-up").value=""
       $(".password-up").value=""
