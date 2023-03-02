@@ -151,14 +151,16 @@ window.onscroll=async ()=>{
 
     let triggerHeight = window.scrollY + document.body.offsetHeight;
 
-    if(window.scrollY+window.innerHeight >= document.body.offsetHeight){
+    console.log(window.scrollY+window.innerHeight,document.body.scrollHeight);
+    
+    if(window.scrollY+window.innerHeight >= document.body.scrollHeight-1){
         loadMorePosts(5).then(e=>{
             ToShowAllPosts(e);
         });
-    }
+    };
 
 
-}
+};
 
 
 /* end get more posts on scrool */
