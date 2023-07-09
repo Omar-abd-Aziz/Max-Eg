@@ -172,6 +172,7 @@ async function ToShowAllPosts(DataToShow){
         AllPosts=DataToShow;
         
         AllPosts.forEach(onePosts=>{
+
             
             if(onePosts.textImg!=="undefined"){
                
@@ -189,10 +190,12 @@ async function ToShowAllPosts(DataToShow){
                                 </div>
         
                                 <ul>
-                                    <li><h3>${onePosts.personName}</h3></li>
+                                    <li><h3 style="font-family: system-ui;">${onePosts.personName}</h3></li>
                                     <li><span>${onePosts.textDate}</span></li>
                                 </ul>
-                                <p style="width: 100%; font-size: 20px; font-family: system-ui; padding: 0px 10px 10px;" dir="auto" > ${onePosts.text} </p>
+                                <p style="width: 100%; font-size: 20px; font-family: system-ui; padding: 0px 10px 10px;" dir="auto" > 
+                                    ${onePosts.text} 
+                                </p>
                             </div>
         
                             <div class="post-images">
@@ -240,6 +243,7 @@ async function ToShowAllPosts(DataToShow){
             
                 `
             } else{
+                
         
                 document.querySelector('.posts-dad').innerHTML+=`
             
@@ -255,11 +259,13 @@ async function ToShowAllPosts(DataToShow){
                                 </div>
         
                                 <ul>
-                                    <li><h3>${onePosts.personName}</h3></li>
+                                    <li><h3 style="font-family: system-ui;">${onePosts.personName}</h3></li>
                                     <li><span>${onePosts.textDate}</span></li>
                                 </ul>
-                                <p style="width: 100%; font-size: 20px; font-family: system-ui;" dir="auto" > ${onePosts.text} </p>
+                                <div class="PostTextDiv" postId="${onePosts.id}" style="width: 100%; font-size: 20px; font-family: system-ui;" dir="auto" >${onePosts.text.trim()}</div>
+                                
                             </div>
+
         
                             <div class="like-comment">
                                 <ul>
@@ -359,16 +365,26 @@ async function ShowAllPosts() {
 
 
 
-
-
-
 /* 08 start btn for dark theam */
+
 var darkButton = document.querySelector(".darkTheme");
+if(localStorage.getItem("darkTheme")==="dark"){
+    document.body.classList.toggle("dark-color");
+    darkButton.classList.toggle("fa-sun");
+    darkButton.classList.toggle("fa-moon");
+}
 
 darkButton.onclick = function(){
     darkButton.classList.toggle("fa-sun");
     darkButton.classList.toggle("fa-moon");
     document.body.classList.toggle("dark-color")
+
+    if([...document.body.classList].includes("dark-color")){
+        localStorage.setItem("darkTheme","dark");
+    } else{
+        localStorage.setItem("darkTheme","white");
+    }
+
 };
 /* 09 end btn for dark theam */
 
@@ -661,13 +677,12 @@ document.querySelector('#PostInput').addEventListener('change',()=>{
 
 let textImg='';
 document.querySelector('#Post-Btn').addEventListener('click',async ()=>{
-    let text = document.querySelector('#Post-Input').value
+    let text = document.querySelector('#Post-Input').innerHTML
     textImg=PostImgSrc;
-
 
     let randomId = parseInt(Math.random()*10000000);
 
-    if(text!==''||textImg!==''){
+    if(text.trim()!==''||textImg.trim()!==''){
 
         setDoc(doc(db,"posts",`${randomId}`),{
             id: `${randomId}`,
@@ -887,3 +902,14 @@ function showDate(){
 
 
 
+
+
+
+
+
+// let darkThemeBtn = document.querySelector(".darkTheme")
+
+// darkThemeBtn.addEventListener("click",()=>{
+//     if([...darkThemeBtn.classList])
+//     console.log("done")
+// });
