@@ -2,8 +2,11 @@
 //////////////////////*start firebase*////////////////////////////
 
 /* 01 start link firebase*/
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-app.js';
-import { getFirestore, collection, query, where, getDocs,getDoc, setDoc, addDoc, doc,deleteDoc,onSnapshot,orderBy, limit,startAt, startAfter,endAt } from 'https://www.gstatic.com/firebasejs/9.8.2/firebase-firestore.js';
+import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js';
+import { getFirestore,getCountFromServer, collection, query, where, getDocs,getDoc, setDoc, addDoc, doc,deleteDoc,onSnapshot,orderBy, limit,startAt, startAfter,endAt } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js';
+
+
+
 
 // TODO: Replace the following with your app's Firebase project configuration
 const firebaseConfig = {
@@ -31,23 +34,18 @@ return cityList;
 /* 01 end link firebase*/
 
 
-
-
-
-
-/* 02 start get AllAccounts */
-
-let AllAccounts;
-
-await getCit(db, 'accounts').then(async (e) => {
-    AllAccounts = e;
-})
+ 
+/* 02 start function getUserDataWithId */
 
 async function getUserDataWithId(id){
-    return AllAccounts.find(e=>e.id==id)
+    let UserData;
+    await getDoc(doc(db, "accounts", `${id}`)).then((e)=>{
+        UserData = e.data();
+    });
+    return UserData
 }
 
-/* 02 end get All Accounts */
+/* 02 end function getUserDataWithId */
 
 
 
@@ -62,10 +60,10 @@ async function getUserDataWithId(id){
 let mainPersonData;
 let docId = await localStorage.getItem("doc-id");
 
-if(docId!==null&&docId.trim()!==''){
-    document.querySelector('.profile-btn').dataset.personid=docId;
+if(docId!==undefined&&docId!==null&&docId.trim()!==''){
     mainPersonData=await getUserDataWithId(docId);
-    getUserData(mainPersonData);
+    document.querySelector('.profile-btn').dataset.personid=docId;
+    showUserData(mainPersonData);
 } else {
   location.href="./login/login.html"
 }
@@ -80,9 +78,9 @@ if(docId!==null&&docId.trim()!==''){
 
 
 
-/* 04 start function to getUserData */
+/* 04 start function to showUserData */
 
-async function getUserData(mainPersonData){
+async function showUserData(mainPersonData){
     
     document.querySelectorAll('.main-person-name').forEach(element=>{
         element.innerHTML=mainPersonData.username;
@@ -93,7 +91,7 @@ async function getUserData(mainPersonData){
     });
 }
 
-/* 04 end function to getUserData */
+/* 04 end function to showUserData */
 
 
 
@@ -106,15 +104,13 @@ let AllPosts;
 
 async function forAllPosts(X){
 
-  const q = query(collection(db, "posts"), orderBy("textTime","desc"), limit(X||10));
-  const querySnapshot = await getDocs(q);
-  const cityList = querySnapshot.docs.map(doc => doc.data());
+  let q = query(collection(db, "posts"), orderBy("textTime","desc"), limit(X||10));
+  let querySnapshot = await getDocs(q);
+  let List = querySnapshot.docs.map(doc => doc.data());
 
-  AllPosts=cityList;
-
+  AllPosts=List;
   return AllPosts;
 };
-
 
 /*05 end return All Posts  */
 
@@ -122,16 +118,16 @@ async function forAllPosts(X){
 
 
 
-/*06 start loadMorePosts */
+/* 06 start loadMorePosts */
 
 async function loadMorePosts(X){
-    const q = query(collection(db, "posts"), orderBy("textTime","desc"), limit(X||10),startAfter(AllPosts[AllPosts.length-1].textTime));
-    const querySnapshot = await getDocs(q);
-    const cityList = querySnapshot.docs.map(doc => doc.data());
-    return cityList;
+    let q = query(collection(db, "posts"), orderBy("textTime","desc"), limit(X||10),startAfter(AllPosts[AllPosts.length-1].textTime));
+    let querySnapshot = await getDocs(q);
+    let List = querySnapshot.docs.map(doc => doc.data());
+    return List;
 }
 
-/*06 end loadMorePosts  */
+/* 06 end loadMorePosts */
 
 
 
@@ -143,16 +139,12 @@ async function loadMorePosts(X){
 
 
 
-/* start get more posts on scrool */
-
+/* 07 start get more posts on scrool */
 
 window.onscroll=async ()=>{
     
-
     let triggerHeight = window.scrollY + document.body.offsetHeight;
 
-    
-    
     if(window.scrollY+window.innerHeight >= document.body.scrollHeight-1){
         loadMorePosts(5).then(e=>{
             ToShowAllPosts(e);
@@ -162,10 +154,14 @@ window.onscroll=async ()=>{
 
 };
 
+/* 07 end get more posts on scrool */
 
-/* end get more posts on scrool */
 
 
+
+
+
+/* 08 start ShowAllPosts */
 
 async function ToShowAllPosts(DataToShow){
 
@@ -210,27 +206,32 @@ async function ToShowAllPosts(DataToShow){
                                     <img id="like-img${onePosts.id}" class="like-btn" data-postid="${onePosts.id}" src="images/like.webp" alt="like" style="cursor: pointer;">
                                     <span class="liksNum${onePosts.id}">
                                     ${
-                                        eval(getAllPostDocs(onePosts.id).then(e=>{
-                                        
-                                        if(e.length==0){
-                                            document.querySelector(`.liksNum${onePosts.id}`).textContent='';
-                                        } else{
-                                            document.querySelector(`.liksNum${onePosts.id}`).textContent=e.length;
-                                        }
-                                        
-                                        let likeDoc=e.find(el=>el.personId==mainPersonData.id);
 
-                                        if(likeDoc!==undefined){
 
-                                            let likeid=likeDoc.id;
+                                        ((eval(
+                                            getPostLikesCount(onePosts.id).then((el)=>{
+                                                el=el[0];
+                                              
+                                                if(el.count===0){
+                                                    document.querySelector(`.liksNum${onePosts.id}`).textContent='';
+                                                } else{
+                                                    document.querySelector(`.liksNum${onePosts.id}`).textContent=el.count;
 
-                                            
-                                            document.querySelector(`#like-img${onePosts.id}`).src="./images/like-blue.webp";
+                                                    if(el.docPersonHaveLike!==undefined){
 
-                                            document.querySelector(`#like-img${onePosts.id}`).dataset.likeid=likeid;
-                                        };
+                                                        let likeid=el.docPersonHaveLike.id;
+                                                        
+                                                        document.querySelector(`#like-img${onePosts.id}`).src="./images/like-blue.webp";
+            
+                                                        document.querySelector(`#like-img${onePosts.id}`).dataset.likeid=likeid;
+                                                    };
 
-                                    }))}
+                                                }
+
+                                            })
+                                        ))=="[object Promise]")?"":""
+
+                                    }
                                     </span>
                                 </li>
                                     <li><i class="fa-regular fa-comment-dots"></i> <span></span></li>
@@ -273,28 +274,36 @@ async function ToShowAllPosts(DataToShow){
                                         <img id="like-img${onePosts.id}" class="like-btn" data-postid="${onePosts.id}" src="images/like.webp" alt="like" style="cursor: pointer;">
                                         <span class="liksNum${onePosts.id}">
                                         ${
-                                            eval(getAllPostDocs(onePosts.id).then(e=>{
                                             
-                                            
-                                            if(e.length==0){
-                                                document.querySelector(`.liksNum${onePosts.id}`).textContent='';
-                                            } else{
-                                                document.querySelector(`.liksNum${onePosts.id}`).textContent=e.length;
-                                            }
-                                            
-                                            let likeDoc=e.find(el=>el.personId==mainPersonData.id);
-    
-                                            if(likeDoc!==undefined){
-    
-                                                let likeid=likeDoc.id;
-    
-                                                
-                                                document.querySelector(`#like-img${onePosts.id}`).src="./images/like-blue.webp";
-    
-                                                document.querySelector(`#like-img${onePosts.id}`).dataset.likeid=likeid;
-                                            };
-    
-                                        }))}
+
+                                            ((eval(
+                                                getPostLikesCount(onePosts.id).then((el)=>{
+                                                    el=el[0];
+                                                    
+                                                    
+                                                    if(el.count===0){
+                                                        document.querySelector(`.liksNum${onePosts.id}`).textContent='';
+                                                    } else{
+                                                        document.querySelector(`.liksNum${onePosts.id}`).textContent=el.count;
+                                                        
+                                                        if(el.docPersonHaveLike!==undefined){
+
+                                                            let likeid=el.docPersonHaveLike.id;
+                                                            
+                                                            document.querySelector(`#like-img${onePosts.id}`).src="./images/like-blue.webp";
+                
+                                                            document.querySelector(`#like-img${onePosts.id}`).dataset.likeid=likeid;
+                                                        };
+                                                    
+                                                    }
+
+                                                })
+                                            ))=="[object Promise]")?"":""
+
+
+
+
+                                        }
                                         </span>
                                     </li>
                                     <li><i class="fa-regular fa-comment-dots"></i> <span></span></li>
@@ -312,7 +321,36 @@ async function ToShowAllPosts(DataToShow){
 
 };
 
-/* end function to check scroll and show posts */
+/* 08 end ShowAllPosts */
+
+
+
+
+/* 09 start function getPostLikesCount and docPersonHaveLike */ 
+
+async function getPostLikesCount(postId){
+
+    let q = query(collection(db, "posts", `${postId}`, "PostLikes"));
+    let snapshot = await getCountFromServer(q);
+    let docPersonHaveLike=undefined;
+
+    if(snapshot.data().count!==0){
+        let qq1 = query(collection(db, "posts", `${postId}`, "PostLikes"), where("personId","==",mainPersonData.id));
+        let qq2 = await getDocs(qq1);
+        let qq3 = qq2.docs.map(doc => doc.data());
+        await qq3.forEach(e=>{
+            // console.log("doc of like person have :", e );
+            docPersonHaveLike = e;
+        })
+    }
+
+    return [{
+        count: snapshot.data().count,
+        docPersonHaveLike: docPersonHaveLike,
+    }]
+}
+
+/* 09 end function getPostLikesCount and docPersonHaveLike */ 
 
 
 
@@ -320,31 +358,7 @@ async function ToShowAllPosts(DataToShow){
 
 
 
-
-
-
-/* strart get PostLikes */
-
-async function getAllPostDocs(postId) {
-    const c1 = collection(db, "posts", postId, "PostLikes");
-    const c2 = await getDocs(c1);
-    const c3 = c2.docs.map(doc => doc.data());
-    return c3;
-};
-
-
-/* end get PostLikes */
-
-
-
-
-
-
-
-
-
-
-/* 07 start function to show Allposts */
+/* 10 start function to show Allposts */
 
 ShowAllPosts();
 
@@ -359,13 +373,13 @@ async function ShowAllPosts() {
 
 };
 
-/* 07 end function to show Allposts */
+/* 10 end function to show Allposts */
 
 
 
 
 
-/* 08 start btn for dark theam */
+/* 11 start btn for dark theam */
 
 var darkButton = document.querySelector(".darkTheme");
 if(localStorage.getItem("darkTheme")==="dark"){
@@ -386,14 +400,14 @@ darkButton.onclick = function(){
     }
 
 };
-/* 09 end btn for dark theam */
+/* 11 end btn for dark theam */
 
 
 
 
 
 
-/* 10 start staties btns */
+/* 12 start staties btns */
 
 let statusBtnRight = document.querySelector(".btn-right")
 let statusBtnLeft = document.querySelector(".btn-left")
@@ -420,7 +434,7 @@ function cheekStatiesBtn(statusBtnLeft){
 }
 
 
-/* 10 end staties btns */
+/* 12 end staties btns */
 
 
 
@@ -431,7 +445,7 @@ function cheekStatiesBtn(statusBtnLeft){
 
 
 
-/* 11 start profile btn */
+/* 13 start window.onclick */
 
 window.onclick=(e)=>{
 
@@ -439,11 +453,7 @@ window.onclick=(e)=>{
         ShowAllPosts();
     }
 
-    if(e.target.classList.value.includes("profile-btn")){
-        location.href='./profile.html'+'?PersonId='+e.target.dataset.personid;
-    }
-
-    if(e.target.classList.value.includes("personToOpenProfile")){
+    if(e.target.classList.value.includes("profile-btn") || e.target.classList.value.includes("personToOpenProfile")){
         location.href='./profile.html'+'?PersonId='+e.target.dataset.personid;
     }
 
@@ -498,7 +508,7 @@ window.onclick=(e)=>{
     }
 
 
-    /* btn to remove/refuse fiend request */
+    /* btn to remove/refuse friend request */
     if(e.target.classList.value.includes('remove-friend-request')){
 
         var mainPersonFriendRequests=[...mainPersonData.friendRequests];
@@ -518,8 +528,7 @@ window.onclick=(e)=>{
 
 
 
-    /* sratt Like btn*/
-    
+    /* start Like btn*/
 
     if(e.target.classList.value.includes("like-btn")){
         let postId=e.target.dataset.postid;
@@ -528,13 +537,17 @@ window.onclick=(e)=>{
 
     };
 
+    /* end Like btn*/
 
 
 };
 
-/* 11 end profile btn */
+/* 13 end window.onclick */
 
 
+
+
+/* 14 start function LikeBtn */
 
 async function LikeBtn(postId,LikeBtn){
 
@@ -555,14 +568,8 @@ async function LikeBtn(postId,LikeBtn){
 
         
         LikeBtn.dataset.likeid=randomId;
-        
 
-
-        getAllPostDocs(postId).then(e=>{
-            LikeBtn.parentNode.children[1].innerHTML=`${e.length}`
-        });
-
-        
+        LikeBtn.parentNode.children[1].innerHTML=`${Number(LikeBtn.parentNode.children[1].innerHTML+1)}`
 
         LikeBtn.src='./images/like-blue.webp';
 
@@ -589,12 +596,12 @@ async function LikeBtn(postId,LikeBtn){
 
 };
 
+/* 14 end function LikeBtn */
 
 
 
 
-
-/* 12 start close and open Post div btn */
+/* 15 start close and open Post div btn */
 
 document.querySelector('#close-post-div').addEventListener('click',()=>{
     document.querySelector('.create-post-dad').style.display='none'
@@ -604,7 +611,7 @@ document.querySelector('.createPost').addEventListener('click',()=>{
     document.querySelector('.create-post-dad').style.display='block'
 })
 
-/* 12 end close and open Post div btn */
+/* 15 end close and open Post div btn */
 
 
 
@@ -612,13 +619,13 @@ document.querySelector('.createPost').addEventListener('click',()=>{
 
 
 
-/* 13 start close and open accountsFromSearchDad div btn */
+/* 16 start close and open accountsFromSearchDad div btn */
 
 document.querySelector('#close-accountsFromSearchDad-div').addEventListener('click',()=>{
     document.querySelector('.accountsFromSearchDad').style.display='none'
 })
 
-/* 13 end close and open accountsFromSearchDad div btn */
+/* 16 end close and open accountsFromSearchDad div btn */
 
 
 
