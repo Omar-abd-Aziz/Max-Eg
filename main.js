@@ -23,6 +23,8 @@ firebase.initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
 const db = getFirestore(app);
 
+const storage = firebase.storage();
+
 let X;
 
 async function getCit(db,X) {
