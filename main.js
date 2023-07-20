@@ -19,11 +19,10 @@ const firebaseConfig = {
     measurementId: "G-PR45N85QT2"
 };
 
- firebase.initializeApp(firebaseConfig);
-  const app = initializeApp(firebaseConfig);
-  const db = getFirestore(app);
-
-  const storage = firebase.storage();
+firebase.initializeApp(firebaseConfig);
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+const storage = firebase.storage();
 
 let X;
 
@@ -641,6 +640,8 @@ document.querySelector('#close-accountsFromSearchDad-div').addEventListener('cli
 let PostImgSrc;
 async function uploadImage() {
 
+    console.log("done1")
+
     const ref = firebase.storage().ref();
     const file =  document.querySelector("#PostInput").files[0];
     const name = +new Date() + "-" + file.name;
@@ -653,12 +654,13 @@ async function uploadImage() {
     .then(async snapshot => snapshot.ref.getDownloadURL())
     .then(async url => {
 
+        console.log("done2")
         PostImgSrc=url;
         document.querySelector(".loaderDad").style.display="none";
 
     })
     .catch(console.error);
-    
+    console.log("done3")
 };
 
 /* 14  end function to upload img */
