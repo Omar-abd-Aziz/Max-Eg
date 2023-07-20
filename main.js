@@ -19,11 +19,11 @@ const firebaseConfig = {
     measurementId: "G-PR45N85QT2"
 };
 
-firebase.initializeApp(firebaseConfig);
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
+ firebase.initializeApp(firebaseConfig);
+  const app = initializeApp(firebaseConfig);
+  const db = getFirestore(app);
 
-const storage = firebase.storage();
+  const storage = firebase.storage();
 
 let X;
 
