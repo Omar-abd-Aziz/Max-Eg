@@ -190,9 +190,9 @@ async function ToShowAllPosts(DataToShow){
                                     <li><h3 style="font-family: system-ui;">${onePosts.personName}</h3></li>
                                     <li><span>${onePosts.textDate}</span></li>
                                 </ul>
-                                <p style="width: 100%; font-size: 20px; font-family: system-ui; padding: 0px 10px 10px;" dir="auto" > 
-                                    ${onePosts.text} 
-                                </p>
+                                
+                                <div class="PostTextDiv" postId="${onePosts.id}" style="margin: 0px 10px 10px; width: 100%; font-size: 20px; font-family: system-ui;" dir="auto" >${onePosts.text.trim()}</div>
+
                             </div>
         
                             <div class="post-images">
@@ -642,11 +642,12 @@ async function uploadImage() {
 
     console.log("done1")
 
-    const ref = firebase.storage().ref();
+    const ref = storage.ref();
     const file =  document.querySelector("#PostInput").files[0];
     const name = +new Date() + "-" + file.name;
     const metadata = {
       contentType: file.type,
+      
     };
   
     const task = ref.child(name).put(file, metadata);
