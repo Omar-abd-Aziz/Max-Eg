@@ -197,7 +197,7 @@ async function ToShowAllPosts(DataToShow){
         
                             <div class="post-images">
                                 <div class="post-images" style="width: 100%;">
-                                    <img src="${onePosts.textImg}" loading="lazy" alt="post images 01" style="">
+                                    <img src="${onePosts.textImg}" loading="lazy" alt="post images 01" style="border: 3px solid white;">
                                 </div>
                             </div>
         
@@ -255,8 +255,8 @@ async function ToShowAllPosts(DataToShow){
                             <div class="post-title">
         
                                 <div style="display: flex; padding: 5px; position: relative; top: 20px; left: 30px; transform: translate(-50%, -50%); margin-right: 10px;">
-                                    <label style="width: 50px; height: 50px; overflow: hidden; border-radius: 50px;">
-                                        <img src="${onePosts.personImg}" loading="lazy" class="profile-btn" data-personid="${onePosts.personId}" alt="user picture">
+                                    <label style=" width: 50px; height: 50px; overflow: hidden; border-radius: 50px;">
+                                        <img  src="${onePosts.personImg}" loading="lazy" class="profile-btn" data-personid="${onePosts.personId}" alt="user picture">
                                     </label>
                                 </div>
         
