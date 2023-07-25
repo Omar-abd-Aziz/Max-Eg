@@ -147,9 +147,9 @@ window.onscroll=async ()=>{
     let triggerHeight = window.scrollY + document.body.offsetHeight;
 
     if(window.scrollY+window.innerHeight >= document.body.scrollHeight-1){
-        loadMorePosts(5).then(e=>{
-            ToShowAllPosts(e);
-        });
+
+        document.querySelector(".loadMorePosts").click();
+        document.querySelector(".loadMorePosts").remove()
     };
 
 
@@ -320,6 +320,9 @@ async function ToShowAllPosts(DataToShow){
     
         });
 
+
+
+    document.querySelector('.posts-dad').innerHTML+=`<button style="display: none;" class="loadMorePosts">more</button>`
 };
 
 /* 08 end ShowAllPosts */
@@ -449,6 +452,14 @@ function cheekStatiesBtn(statusBtnLeft){
 /* 13 start window.onclick */
 
 window.onclick=(e)=>{
+
+    if(e.target.classList.value.includes("loadMorePosts")){
+        
+        loadMorePosts(4).then(e=>{
+            ToShowAllPosts(e);
+        });
+
+    }
 
     if(e.target.classList.value.includes("Home-btn")){
         ShowAllPosts();
