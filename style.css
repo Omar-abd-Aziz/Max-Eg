@@ -712,7 +712,7 @@ header{
     color: var(--gray);
     margin-left: 10px;
     font-size: 14px;
-    font-family: cursive;
+    font-family: 'FontAwesome';
     font-weight: 600;
 }
 
