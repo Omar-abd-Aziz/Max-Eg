@@ -1,23 +1,10 @@
 
 //////////////////////*start firebase*////////////////////////////
 
-/* 01 start link firebase*/
-import { initializeApp } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-app.js';
-import { getFirestore,getCountFromServer, collection, query, where, getDocs,getDoc, setDoc, addDoc, doc,deleteDoc,onSnapshot,orderBy, limit,startAt, startAfter,endAt } from 'https://www.gstatic.com/firebasejs/10.0.0/firebase-firestore.js';
 
+/* start import all firebase methods filles from firebase js*/
+import {firebaseConfig,initializeApp ,getFirestore,getCountFromServer, collection, query, where, getDocs,getDoc, setDoc, addDoc, doc,deleteDoc,onSnapshot,orderBy, limit,startAt, startAfter,endAt  } from "./firebase.js";
 
-
-
-// TODO: Replace the following with your app's Firebase project configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyC9_NRBMWMhilmQ-rYHu8YXC5aXMucxdWU",
-    authDomain: "max-eg.firebaseapp.com",
-    projectId: "max-eg",
-    storageBucket: "max-eg.appspot.com",
-    messagingSenderId: "832213298246",
-    appId: "1:832213298246:web:149af181774289bd2eae47",
-    measurementId: "G-PR45N85QT2"
-};
 
 firebase.initializeApp(firebaseConfig);
 const app = initializeApp(firebaseConfig);
@@ -59,7 +46,7 @@ async function getUserDataWithId(id){
 /* 03 start check and get user doc */
 
 let mainPersonData;
-let docId = await localStorage.getItem("doc-id");
+let docId = await localStorage.getItem("max-eg-doc-id");
 
 if(docId!==undefined&&docId!==null&&docId.trim()!==''){
     mainPersonData=await getUserDataWithId(docId);
@@ -88,7 +75,7 @@ async function showUserData(mainPersonData){
     });
   
     document.querySelectorAll('.main-person-img').forEach(element=>{
-        element.src=mainPersonData.personImg;
+        element.src=mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg";
     });
 }
 
@@ -453,6 +440,7 @@ function cheekStatiesBtn(statusBtnLeft){
 
 window.onclick=(e)=>{
 
+
     if(e.target.classList.value.includes("loadMorePosts")){
         
         loadMorePosts(4).then(e=>{
@@ -460,6 +448,8 @@ window.onclick=(e)=>{
         });
 
     }
+
+
 
     if(e.target.classList.value.includes("Home-btn")){
         ShowAllPosts();
@@ -486,7 +476,7 @@ window.onclick=(e)=>{
             let personFriends=[...PersonData.friends] ;
             personFriends.push({
                 personId: mainPersonData.id,
-                personImg: mainPersonData.personImg,
+                personImg: mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
                 personName: mainPersonData.username,
             });
 
@@ -498,7 +488,7 @@ window.onclick=(e)=>{
             var mainFriends=[...mainPersonData.friends];
             mainFriends.push({
                 personId: PersonData.id,
-                personImg: PersonData.personImg,
+                personImg: PersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
                 personName: PersonData.username,
             });
 
@@ -574,14 +564,14 @@ async function LikeBtn(postId,LikeBtn){
             id: randomId,
             personName: mainPersonData.username,
             personId: mainPersonData.id,
-            personImg: mainPersonData.personImg,
+            personImg: mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
         });
 
 
         
         LikeBtn.dataset.likeid=randomId;
 
-        LikeBtn.parentNode.children[1].innerHTML=`${Number(LikeBtn.parentNode.children[1].innerHTML+1)}`
+        LikeBtn.parentNode.children[1].innerHTML=`${Number(LikeBtn.parentNode.children[1].innerHTML)+1}`
 
         LikeBtn.src='./images/like-blue.webp';
 
@@ -715,7 +705,7 @@ document.querySelector('#Post-Btn').addEventListener('click',async ()=>{
             textDate: `${showDate()}`,
             personId: mainPersonData.id,
             personName: mainPersonData.username,
-            personImg: mainPersonData.personImg,
+            personImg: mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
         }).then(e=>{
             location.reload();
         })

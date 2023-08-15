@@ -14,8 +14,8 @@ html{
     font-family: 'Poppins', sans-serif;
 }
 :root{
-    --background: repeating-linear-gradient(48deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),repeating-linear-gradient(352deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),repeating-linear-gradient(30deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),linear-gradient(90deg, rgb(14, 172, 245),rgb(6,0,9));
-    /* --background: #d1deec; */
+    /* --background: repeating-linear-gradient(48deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),repeating-linear-gradient(352deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),repeating-linear-gradient(30deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),linear-gradient(90deg, rgb(14, 172, 245),rgb(6,0,9)); */
+    --background: #d1deec;
     --foreground: #f1f3f5;
     --white: #fff;
     --black: #000;
@@ -24,14 +24,28 @@ html{
     --border: #cfcfcf;
 }
 .dark-color{
-    --background: repeating-linear-gradient(358deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),repeating-linear-gradient(280deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),repeating-linear-gradient(337deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),linear-gradient(90deg, rgb(255,255,255),rgb(35,101,195));
-    /* --background: #222230; */
+    /* --background: repeating-linear-gradient(358deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),repeating-linear-gradient(280deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),repeating-linear-gradient(337deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),linear-gradient(90deg, rgb(255,255,255),rgb(35,101,195)); */
+    --background: #222230;
     --foreground: #42435c;
     --white: #2b2c44;
     --black: #eeecff;
     --gray: #d5dfd5;
     --shadow: #00000063;
     --border: #3f4172;
+}
+
+
+
+@media (max-width: 500px) {
+    .dark-color{
+        --background: repeating-linear-gradient(358deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),repeating-linear-gradient(280deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),repeating-linear-gradient(337deg, rgb(34,34,48) 0px, rgb(34,34,48) 27px,transparent 27px, transparent 29px),linear-gradient(90deg, rgb(255,255,255),rgb(35,101,195));
+    }
+
+
+    :root{
+        --background: repeating-linear-gradient(48deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),repeating-linear-gradient(352deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),repeating-linear-gradient(30deg, rgb(209,222,236) 0px, rgb(209,222,236) 27px,transparent 27px, transparent 30px),linear-gradient(90deg, rgb(14, 172, 245),rgb(6,0,9));
+    }
+
 }
 
 .darkTheme.button-Active span{
