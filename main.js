@@ -560,7 +560,7 @@ async function LikeBtn(postId,LikeBtn){
 
         
 
-        setDoc(doc(db, "posts", postId, "PostLikes",`${randomId}`),{
+        setDoc(doc(db, "posts", `${postId}`, "PostLikes",`${randomId}`),{
             id: randomId,
             personName: mainPersonData.username,
             personId: mainPersonData.id,

@@ -224,6 +224,7 @@ let AllPostsByUser;
 
 async function forAllPosts(X){
 
+  console.log(userProfileData.id)
   let q = query(collection(db, "posts"),where("personId","==",`${userProfileData.id}`), orderBy("textTime","desc"), limit(X||10));
   let querySnapshot = await getDocs(q);
   let List = querySnapshot.docs.map(doc => doc.data());
@@ -500,7 +501,7 @@ async function LikeBtn(postId,LikeBtn){
 
       
 
-      setDoc(doc(db, "posts", postId, "PostLikes",`${randomId}`),{
+      setDoc(doc(db, "posts", `${postId}`, "PostLikes",`${randomId}`),{
           id: randomId,
           personName: mainPersonData.username,
           personId: mainPersonData.id,
@@ -609,7 +610,7 @@ async function uploadImage() {
     console.log(url);
     document.querySelector('.main-person-img').src=url
 
-    setDoc(doc(db, "accounts", localStorage.getItem("max-eg-doc-id")), {
+    setDoc(doc(db, "accounts", `${localStorage.getItem("max-eg-doc-id")}`), {
       ...mainPersonData,
       personImg: url,
     });
@@ -769,7 +770,7 @@ document.querySelector('.sendFriendRequest').addEventListener('click',async ()=>
         personName: mainPersonData.username,
       })
 
-      setDoc(doc(db,"accounts",personid), {
+      setDoc(doc(db,"accounts",`${personid}`), {
         ...e.data(),
         friendRequests: friendRequests,
       })
