@@ -71,7 +71,7 @@ if(docId!==undefined&&docId!==null&&docId.trim()!==''){
 async function showUserData(mainPersonData){
     
     document.querySelectorAll('.main-person-name').forEach(element=>{
-        element.innerHTML=mainPersonData.username;
+        element.innerHTML=mainPersonData.name||mainPersonData.username;
     });
   
     document.querySelectorAll('.main-person-img').forEach(element=>{
@@ -477,7 +477,7 @@ window.onclick=(e)=>{
             personFriends.push({
                 personId: mainPersonData.id,
                 personImg: mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
-                personName: mainPersonData.username,
+                personName: mainPersonData.name||mainPersonData.username,
             });
 
             setDoc(doc(db,"accounts",personId), {
@@ -489,7 +489,7 @@ window.onclick=(e)=>{
             mainFriends.push({
                 personId: PersonData.id,
                 personImg: PersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
-                personName: PersonData.username,
+                personName: PersonData.name||PersonData.username,
             });
 
             let mainPersonFriendRequests=[...mainPersonData.friendRequests];
@@ -562,7 +562,7 @@ async function LikeBtn(postId,LikeBtn){
 
         setDoc(doc(db, "posts", `${postId}`, "PostLikes",`${randomId}`),{
             id: randomId,
-            personName: mainPersonData.username,
+            personName: mainPersonData.name||mainPersonData.username,
             personId: mainPersonData.id,
             personImg: mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
         });
@@ -693,7 +693,7 @@ document.querySelector('#Post-Btn').addEventListener('click',async ()=>{
     let text = document.querySelector('#Post-Input').innerHTML
     textImg=PostImgSrc;
 
-    let randomId = parseInt(Math.random()*10000000);
+    let randomId = parseInt(Math.random()*1000000000);
 
     if(text.trim()!==''||textImg.trim()!==''){
 
@@ -704,7 +704,7 @@ document.querySelector('#Post-Btn').addEventListener('click',async ()=>{
             textTime: Date.now(),
             textDate: `${showDate()}`,
             personId: mainPersonData.id,
-            personName: mainPersonData.username,
+            personName: mainPersonData.name||mainPersonData.username,
             personImg: mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
         }).then(e=>{
             location.reload();
@@ -742,7 +742,7 @@ function searchAboutPerson(){
             login=login.trim();
 
             if(login!==''){
-                let AllAccountsHasTheSameName=AllAccounts.filter(el=>el.username.includes(`${login}`));
+                let AllAccountsHasTheSameName=AllAccounts.filter(el=>el.username.includes(`${login}`)||el.name.includes(`${login}`));
                 return AllAccountsHasTheSameName;
             }else{
                 Swal.fire(
@@ -785,7 +785,7 @@ function searchAboutPerson(){
                     <ul>
                         <li><img class='personToOpenProfile' data-personid="${e.id}" src="${e.personImg}" loading="lazy" style='cursor: pointer; user-select: none;' alt="user"></li>
                         <li>
-                            <b style="color: rgb(151, 208, 182);">${e.username}</b>
+                            <b style="color: rgb(151, 208, 182);">${e.name||e.username}</b>
                             <p style="color: white;">${isFriend}</p>
                         </li>
                     </ul>

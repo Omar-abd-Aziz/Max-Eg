@@ -57,7 +57,7 @@ if(docId!==null&&docId!==''&&docId!==undefined){
         userProfileData=e.data();
         // console.log(userProfileData);
         document.querySelectorAll('.person-name').forEach(element=>{
-          element.innerHTML=e.data().username;
+          element.innerHTML=e.data().name||e.data().username;
         });
   
         document.querySelectorAll('.person-img').forEach(element=>{
@@ -503,7 +503,7 @@ async function LikeBtn(postId,LikeBtn){
 
       setDoc(doc(db, "posts", `${postId}`, "PostLikes",`${randomId}`),{
           id: randomId,
-          personName: mainPersonData.username,
+          personName: mainPersonData.name||mainPersonData.username,
           personId: mainPersonData.id,
           personImg: mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
       });
@@ -660,6 +660,56 @@ function settingsMenuToggle() {
 window.onclick=(e)=>{
 
 
+  if(e.target.classList.value.includes("person-name")&&userProfileData.id==docId){
+        
+    Swal.fire({
+      title: 'Change Name',
+      input: 'text',
+      inputValue: `${e.target.textContent.trim()}`,
+      inputAttributes: {
+        autocapitalize: 'off'
+      },
+      showCancelButton: true,
+      confirmButtonText: 'Save',
+      showLoaderOnConfirm: true,
+      preConfirm: async(newName) => {
+
+        newName=newName.trim();
+
+        if(newName!==''){
+
+          setDoc(doc(db, "accounts", `${userProfileData.id}`), {
+            ...userProfileData,
+            name: newName,
+          }).then(e=>{
+            document.querySelectorAll(".person-name").forEach(e=>{
+              e.textContent=`${newName}`;
+            });
+
+            
+            Swal.fire(
+              'Done',
+              '',
+              'success'
+            );
+          })
+              
+        }else{
+          Swal.fire(
+            'Error',
+            '',
+            'error'
+          );
+        };
+          
+          
+      },
+      allowOutsideClick: () => !Swal.isLoading()
+    })
+
+  } 
+
+
   if(e.target.classList.value.includes("loadMorePosts")){
         
     loadMorePosts(4).then(e=>{
@@ -767,7 +817,7 @@ document.querySelector('.sendFriendRequest').addEventListener('click',async ()=>
       friendRequests.push({
         personId: docId,
         personImg: mainPersonData.personImg,
-        personName: mainPersonData.username,
+        personName: mainPersonData.name||mainPersonData.username,
       })
 
       setDoc(doc(db,"accounts",`${personid}`), {

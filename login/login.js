@@ -140,6 +140,7 @@ document.querySelector(".btn-sign-up").addEventListener("click",async()=>{
             setDoc(doc(db,"accounts",`${id}`),{
                 id: id,
                 username: username,
+                name: username,
                 password: password,
                 email: email,
                 time: Date.now(),
