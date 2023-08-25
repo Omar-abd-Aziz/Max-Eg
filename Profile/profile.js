@@ -28,7 +28,7 @@ let mainPersonData;
 let userProfileData;
 let docId=localStorage.getItem("max-eg-doc-id");
 
-console.log(docId)
+// console.log(docId)
 
 /* 2 end get user doc and main person data */
 
@@ -63,6 +63,27 @@ if(docId!==null&&docId!==''&&docId!==undefined){
         document.querySelectorAll('.person-img').forEach(element=>{
           element.src=e.data().personImg;
         });
+
+
+        console.log(userProfileData.id);
+        console.log(mainPersonData.id);
+    
+        if(userProfileData.id!==mainPersonData.id){
+    
+          document.querySelector('#label-change-person-img').style.display='none'
+          document.querySelector('.person-img-notChange').style.display='block'
+        }
+
+        let img = document.querySelector(".person-img-notChange")
+        img.addEventListener("click",()=>{
+          Swal.fire({
+            imageUrl: `${img.src}`,
+            imageAlt: 'A image'
+          })
+        })
+    
+
+        ShowAllPosts();
   
       });
     }
@@ -72,8 +93,7 @@ if(docId!==null&&docId!==''&&docId!==undefined){
       document.querySelector('.sendFriendRequest').style.display='none'
     }
 
-    document.querySelector('#label-change-person-img').style.display='none'
-    document.querySelector('.person-img-notChange').style.display='block'
+
 
   }
   
@@ -224,7 +244,7 @@ let AllPostsByUser;
 
 async function forAllPosts(X){
 
-  console.log(userProfileData.id)
+  // console.log(userProfileData.id)
   let q = query(collection(db, "posts"),where("personId","==",`${userProfileData.id}`), orderBy("textTime","desc"), limit(X||10));
   let querySnapshot = await getDocs(q);
   let List = querySnapshot.docs.map(doc => doc.data());
@@ -245,14 +265,14 @@ async function forAllPosts(X){
 
 /* 5 start function to show Allposts */
 
-ShowAllPosts();
+// ShowAllPosts();
 
 async function ShowAllPosts() {
 
     document.querySelector('.posts-dad').innerHTML=``;
 
     await forAllPosts(5).then(e=>{
-        console.log(e)
+        // console.log(e)
         ToShowAllPosts(e);
     });
     
@@ -339,7 +359,7 @@ async function ToShowAllPosts(DataToShow){
                                                   let likeid=el.docPersonHaveLike.id;
                                                   
                                                   document.querySelector(`#like-img${onePosts.id}`).src="./images/like-blue.webp";
-                                                  console.log("x")
+                                                  // console.log("x")
                                                   document.querySelector(`#like-img${onePosts.id}`).dataset.likeid=likeid;
                                               };
 
@@ -607,7 +627,7 @@ async function uploadImage() {
   .then(async snapshot => snapshot.ref.getDownloadURL())
   .then(async url => {
 
-    console.log(url);
+    // console.log(url);
     document.querySelector('.main-person-img').src=url
 
     setDoc(doc(db, "accounts", `${localStorage.getItem("max-eg-doc-id")}`), {
@@ -921,12 +941,12 @@ function removePost(postId,postToRemove){
 
 var darkButton = document.querySelector(".darkTheme");
 if(localStorage.getItem("darkTheme")==="dark"){
-  console.log("dark theme");
+  // console.log("dark theme");
   document.body.classList.toggle("dark-theme");
   darkButton.classList.toggle("fa-sun");
   darkButton.classList.toggle("fa-moon");
 }else{
-  console.log("white theme");
+  // console.log("white theme");
 }
 
 darkButton.onclick = function(){
