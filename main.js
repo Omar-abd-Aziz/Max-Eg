@@ -688,6 +688,19 @@ document.querySelector('#PostInput').addEventListener('change',()=>{
 })
 
 
+
+let PostInputTest=document.querySelector('#Post-Input')
+
+PostInputTest.addEventListener("paste",async(e)=>{
+    let text = await navigator.clipboard.readText();
+ 
+    PostInputTest.innerHTML=PostInputTest.textContent;
+
+})
+
+
+
+
 let textImg='';
 document.querySelector('#Post-Btn').addEventListener('click',async ()=>{
     let text = document.querySelector('#Post-Input').innerHTML
