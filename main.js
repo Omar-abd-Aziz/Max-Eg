@@ -703,7 +703,7 @@ document.querySelector('#Post-Btn').addEventListener('click',async ()=>{
             textImg: `${textImg}`,
             textTime: Date.now(),
             textDate: `${showDate()}`,
-            personId: mainPersonData.id,
+            personId: `${mainPersonData.id}`,
             personName: mainPersonData.name||mainPersonData.username,
             personImg: mainPersonData.personImg||"https://img.freepik.com/free-icon/user_318-159711.jpg",
         }).then(e=>{
